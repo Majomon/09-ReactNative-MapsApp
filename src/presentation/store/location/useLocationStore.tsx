@@ -1,6 +1,6 @@
-import {create} from 'zustand';
-import {Location} from '../../../interfaces/location';
-import {getCurrentLocation} from '../../../actions/location/location';
+import { create } from 'zustand';
+import { getCurrentLocation } from '../../../actions/location/location';
+import { Location } from '../../../interfaces/location';
 
 interface LocationState {
   /* Ultima ubicacion conocida del usuario */
