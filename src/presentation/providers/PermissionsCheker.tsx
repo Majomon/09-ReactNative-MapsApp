@@ -10,9 +10,17 @@ export const PermissionsCheker = ({children}: PropsWithChildren) => {
 
   useEffect(() => {
     if (locationStatus === 'granted') {
-      navigation.navigate('MapsScreen');
+      /* Seria como el replace pero en esta version no se puede usar -> .reset */
+      /* Es para evitar que se pueda volver a la página anterior */
+      
+      navigation.reset({
+        routes: [{name: 'MapsScreen'}],
+      });
+
     } else if (locationStatus !== 'undetermined') {
-      navigation.navigate('PermissionsScreen');
+      navigation.reset({
+        routes: [{name: 'PermissionsScreen'}],
+      });
     }
   }, [locationStatus]);
 
