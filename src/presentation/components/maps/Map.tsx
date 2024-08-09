@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Platform} from 'react-native';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Marker, Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
 import {Location} from '../../../interfaces/location';
 import {FAB} from '../ui/FAB';
 import {useLocationStore} from '../../store/location/useLocationStore';
@@ -14,9 +14,15 @@ export const Map = ({showsUserLocation = true, initialLocation}: Props) => {
   const mapRef = useRef<MapView>();
   const cameraLocation = useRef<Location>(initialLocation);
   const [isFollowingUser, setIsFollowingUser] = useState(true);
+  const [isFollowingPolyline, setIsFollowingPolyline] = useState(true);
 
-  const {getLocation, lastKnowLocation, watchLocation, clearWatchLocation} =
-    useLocationStore();
+  const {
+    getLocation,
+    lastKnowLocation,
+    watchLocation,
+    clearWatchLocation,
+    userLocationsList,
+  } = useLocationStore();
 
   const moveCamaraToLocation = (location: Location) => {
     if (!mapRef.current) return;
@@ -65,6 +71,13 @@ export const Map = ({showsUserLocation = true, initialLocation}: Props) => {
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}>
+        {isFollowingPolyline && (
+          <Polyline
+            coordinates={userLocationsList}
+            strokeColor="black"
+            strokeWidth={5}
+          />
+        )}
         {/* Marcador */}
         {/*       <Marker
           coordinate={{
@@ -76,6 +89,12 @@ export const Map = ({showsUserLocation = true, initialLocation}: Props) => {
           image={require("../../../assets/custom-marker.png")}
         /> */}
       </MapView>
+      <FAB
+        iconName={isFollowingPolyline ? 'eye-outline' : 'eye-off-outline'}
+        onPress={() => setIsFollowingPolyline(!isFollowingPolyline)}
+        style={{bottom: 140, right: 20}}
+      />
+
       <FAB
         iconName={isFollowingUser ? 'walk-outline' : 'accessibility-outline'}
         onPress={() => setIsFollowingUser(!isFollowingUser)}
