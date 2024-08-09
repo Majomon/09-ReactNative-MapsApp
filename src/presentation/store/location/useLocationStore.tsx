@@ -28,7 +28,7 @@ export const useLocationStore = create<LocationState>()((set, get) => ({
     return location;
   },
 
-  watchLocation: () => {
+  watchLocation: async () => {
     const watchId = get().watchId;
     if (watchId !== null) {
       get().clearWatchLocation();
